@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Apuestas - Casa de Apuestas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: #fff; }
+        .sidebar { min-height: 100vh; background-color: #1e293b; padding-top: 1rem; }
+        .sidebar a { color: #cbd5e1; display: block; padding: 10px 15px; text-decoration: none; border-radius: 8px; margin: 5px 0; }
+        .sidebar a:hover, .sidebar a.active { background-color: #334155; color: #fff; }
+        .card-custom { background-color: #1e293b; border: none; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .table-dark th, .table-dark td { color: #fff; }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
+            <a th:href="@{/}">🏠 Dashboard</a>
+            <a th:href="@{/eventos}">⚽ Deportes</a>
+            <a th:href="@{/apuestas}" class="active">🎟 Mis Apuestas</a>
+            <a th:href="@{/historial}">📜 Historial</a>
+        </div>
+
+        <div class="col-md-10 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Mis Apuestas</h2>
+                <div class="d-flex align-items-center">
+                    <span class="me-4">💰 Saldo: <strong>€500.00</strong></span>
+
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" 
+                           id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            👤 Carlos Rodríguez
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" th:href="@{/perfil}">👤 Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">🚪 Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-custom">
+                <table class="table table-dark table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Evento</th>
+                            <th>Monto</th>
+                            <th>Cuota</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Real Madrid vs PSG</td>
+                            <td>50 €</td>
+                            <td>1.85</td>
+                            <td><span class="badge bg-success">Ganada</span></td>
+                        </tr>
+                        <tr>
+                            <td>Lakers vs Celtics</td>
+                            <td>30 €</td>
+                            <td>2.10</td>
+                            <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                        </tr>
+                        <tr>
+                            <td>Novak Djokovic vs Nadal</td>
+                            <td>20 €</td>
+                            <td>2.50</td>
+                            <td><span class="badge bg-danger">Perdida</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
