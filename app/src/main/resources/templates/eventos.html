@@ -1,68 +1,182 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Eventos - Casa de Apuestas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #0f172a; color: #fff; }
-        .sidebar { min-height: 100vh; background-color: #1e293b; padding-top: 1rem; }
-        .sidebar a { color: #cbd5e1; display: block; padding: 10px 15px; text-decoration: none; border-radius: 8px; margin: 5px 0; }
-        .sidebar a:hover, .sidebar a.active { background-color: #334155; color: #fff; }
-        .card-custom { background-color: #1e293b; border: none; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
-        .btn-bet { background-color: #22c55e; border: none; color: white; font-weight: bold; }
-        .btn-bet:hover { background-color: #16a34a; }
+        body {
+            background-color: #0f172a;
+            color: #fff;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #1e293b;
+            padding-top: 1rem;
+        }
+
+        .sidebar a {
+            color: #cbd5e1;
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #334155;
+            color: #fff;
+        }
+
+        .card-custom {
+            background-color: #1e293b;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-bet {
+            background-color: #22c55e;
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-bet:hover {
+            background-color: #16a34a;
+        }
     </style>
 </head>
+
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2 sidebar">
-            <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
-            <a th:href="@{/}">🏠 Dashboard</a>
-            <a th:href="@{/eventos}" class="active">⚽ Deportes</a>
-            <a th:href="@{/apuestas}">🎟 Mis Apuestas</a>
-            <a th:href="@{/historial}">📜 Historial</a>
-        </div>
-
-        <div class="col-md-10 p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Eventos Deportivos</h2>
-                <div class="d-flex align-items-center">
-                    <span class="me-4">💰 Saldo: <strong>€500.00</strong></span>
-
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" 
-                           id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            👤 Carlos Rodríguez
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" th:href="@{/perfil}">👤 Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">🚪 Cerrar sesión</a></li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar">
+                <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
+                <a th:href="@{/}">🏠 Dashboard</a>
+                <a th:href="@{/eventos}" class="active">⚽ Deportes</a>
+                <a th:href="@{/apuestas}">🎟 Mis Apuestas</a>
+                <a th:href="@{/historial}">📜 Historial</a>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card-custom">
-                        <h5>⚽ Champions League - Final</h5>
-                        <p>Real Madrid vs PSG</p>
-                        <button class="btn btn-bet">Apostar</button>
+            <div class="col-md-10 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Eventos Deportivos</h2>
+                    <div class="d-flex align-items-center">
+                        <span class="me-4">💰 Saldo: <strong>€500.00</strong></span>
+
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                👤 Carlos Rodríguez
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" th:href="@{/perfil}">👤 Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="#">🚪 Cerrar sesión</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card-custom">
-                        <h5>🏀 NBA Finals</h5>
-                        <p>Lakers vs Celtics</p>
-                        <button class="btn btn-bet">Apostar</button>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>⚽ Champions League - Final</h5>
+                            <p>Real Madrid vs PSG</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>🏀 NBA Finals</h5>
+                            <p>Lakers vs Celtics</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
                     </div>
                 </div>
+                <div class="row">
+                    <!-- Evento 1 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>⚽ Champions League - Final</h5>
+                            <p>Real Madrid vs PSG</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 2 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>🏀 NBA Finals</h5>
+                            <p>Lakers vs Celtics</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 3 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>⚽ Premier League</h5>
+                            <p>Manchester City vs Liverpool</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 4 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>🎾 Wimbledon - Semifinal</h5>
+                            <p>Novak Djokovic vs Carlos Alcaraz</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 5 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>🏈 Super Bowl</h5>
+                            <p>Kansas City Chiefs vs San Francisco 49ers</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 6 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>⚾ MLB World Series</h5>
+                            <p>Yankees vs Dodgers</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 7 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>🥊 Boxeo - Peso Pesado</h5>
+                            <p>Tyson Fury vs Oleksandr Usyk</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+
+                    <!-- Evento 8 -->
+                    <div class="col-md-6">
+                        <div class="card-custom">
+                            <h5>🏎 Fórmula 1 - Gran Premio de Mónaco</h5>
+                            <p>Verstappen vs Hamilton</p>
+                            <button class="btn btn-bet">Apostar</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
