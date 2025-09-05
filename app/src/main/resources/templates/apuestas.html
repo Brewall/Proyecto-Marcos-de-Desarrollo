@@ -16,6 +16,7 @@
 <body>
 <div class="container-fluid">
     <div class="row">
+        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
             <a th:href="@{/}">🏠 Dashboard</a>
@@ -24,6 +25,7 @@
             <a th:href="@{/historial}">📜 Historial</a>
         </div>
 
+        <!-- Contenido principal -->
         <div class="col-md-10 p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Mis Apuestas</h2>
@@ -43,7 +45,61 @@
                 </div>
             </div>
 
-            <div class="card-custom">
+            <!-- Alert -->
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                ℹ️ Recuerda revisar bien tus apuestas antes de confirmarlas.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Formulario nueva apuesta -->
+            <div class="card-custom mb-4">
+                <h4 class="mb-3">Realizar nueva apuesta</h4>
+                <form>
+                    <!-- Select evento -->
+                    <div class="mb-3">
+                        <label class="form-label">Evento</label>
+                        <select class="form-select">
+                            <option>Real Madrid vs PSG</option>
+                            <option>Lakers vs Celtics</option>
+                            <option>Djokovic vs Nadal</option>
+                        </select>
+                    </div>
+
+                    <!-- Input monto -->
+                    <div class="mb-3">
+                        <label class="form-label">Monto (€)</label>
+                        <input type="number" class="form-control" placeholder="Ej: 50">
+                    </div>
+
+                    <!-- Radio tipo apuesta -->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de apuesta</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tipo" value="simple">
+                            <label class="form-check-label">Simple</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tipo" value="combinada">
+                            <label class="form-check-label">Combinada</label>
+                        </div>
+                    </div>
+
+                    <!-- Checkbox términos -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terminos">
+                        <label class="form-check-label" for="terminos">Acepto los términos y condiciones</label>
+                    </div>
+
+                    <!-- Botón apostar con modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        💸 Apostar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tabla historial -->
+            <div class="card-custom mb-4">
+                <h4 class="mb-3">Historial de apuestas</h4>
                 <table class="table table-dark table-striped mb-0">
                     <thead>
                         <tr>
@@ -76,10 +132,38 @@
                 </table>
             </div>
 
+            <!-- Barra de progreso -->
+            <div class="card-custom">
+                <h4 class="mb-3">Apuesta en vivo</h4>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                         role="progressbar" style="width: 70%;">70% del partido</div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<!-- Modal de confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-dark">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar apuesta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de realizar esta apuesta?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
-
+</html
