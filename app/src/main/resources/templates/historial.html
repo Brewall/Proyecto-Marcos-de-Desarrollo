@@ -9,32 +9,38 @@
         .sidebar { min-height: 100vh; background-color: #1e293b; padding-top: 1rem; }
         .sidebar a { color: #cbd5e1; display: block; padding: 10px 15px; text-decoration: none; border-radius: 8px; margin: 5px 0; }
         .sidebar a:hover, .sidebar a.active { background-color: #334155; color: #fff; }
-        .card-custom { background-color: #1e293b; border: none; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
         .dropdown-menu { background-color: #1e293b; }
         .dropdown-menu a { color: #cbd5e1; }
         .dropdown-menu a:hover { background-color: #334155; color: #fff; }
+        .badge-win { background-color: #22c55e; }
+        .badge-lose { background-color: #ef4444; }
+        .card-custom { background-color: #1e293b; border: none; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
+        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
             <a th:href="@{/}">🏠 Dashboard</a>
             <a th:href="@{/eventos}">⚽ Deportes</a>
             <a th:href="@{/apuestas}">🎟 Mis Apuestas</a>
             <a th:href="@{/historial}" class="active">📜 Historial</a>
+            <a th:href="@{/perfil}">👤 Perfil</a>
         </div>
 
+        <!-- Contenido principal -->
         <div class="col-md-10 p-4">
+            <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Historial de Apuestas</h2>
+                <h2>📜 Historial de Apuestas</h2>
                 <div class="d-flex align-items-center">
                     <span class="me-4">💰 Saldo: <strong>€500.00</strong></span>
-                    <!-- Menú de usuario -->
+                    <!-- Menú usuario -->
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            👤 Usuario: <strong>Carlos Rodríguez</strong>
+                            👤 Carlos Rodríguez
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a></li>
@@ -44,37 +50,83 @@
                 </div>
             </div>
 
-            <table class="table table-dark table-striped">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Evento</th>
-                        <th>Monto</th>
-                        <th>Resultado</th>
-                        <th>Ganancia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>01/09/2025</td>
-                        <td>Real Madrid vs PSG</td>
-                        <td>50 €</td>
-                        <td>Ganada</td>
-                        <td>92 €</td>
-                    </tr>
-                    <tr>
-                        <td>02/09/2025</td>
-                        <td>Lakers vs Celtics</td>
-                        <td>30 €</td>
-                        <td>Perdida</td>
-                        <td>0 €</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Tabla Historial -->
+            <div class="card-custom">
+                <table class="table table-dark table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Evento</th>
+                            <th>Monto</th>
+                            <th>Resultado</th>
+                            <th>Ganancia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01/09/2025</td>
+                            <td>Real Madrid vs PSG</td>
+                            <td>50 €</td>
+                            <td><span class="badge badge-win">Ganada</span></td>
+                            <td>92 €</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle" 
+                                    data-evento="Real Madrid vs PSG" data-monto="50 €" data-resultado="Ganada" data-ganancia="92 €">
+                                    Ver Detalles
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>02/09/2025</td>
+                            <td>Lakers vs Celtics</td>
+                            <td>30 €</td>
+                            <td><span class="badge badge-lose">Perdida</span></td>
+                            <td>0 €</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle" 
+                                    data-evento="Lakers vs Celtics" data-monto="30 €" data-resultado="Perdida" data-ganancia="0 €">
+                                    Ver Detalles
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Detalles -->
+<div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDetalleLabel">📊 Detalles de la Apuesta</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Evento:</strong> <span id="detalleEvento">-</span></p>
+        <p><strong>Monto:</strong> <span id="detalleMonto">-</span></p>
+        <p><strong>Resultado:</strong> <span id="detalleResultado">-</span></p>
+        <p><strong>Ganancia:</strong> <span id="detalleGanancia">-</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Script para cargar datos en el modal dinámicamente
+  const modalDetalle = document.getElementById('modalDetalle');
+  modalDetalle.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    document.getElementById('detalleEvento').textContent = button.getAttribute('data-evento');
+    document.getElementById('detalleMonto').textContent = button.getAttribute('data-monto');
+    document.getElementById('detalleResultado').textContent = button.getAttribute('data-resultado');
+    document.getElementById('detalleGanancia').textContent = button.getAttribute('data-ganancia');
+  });
+</script>
 </body>
 </html>
-
