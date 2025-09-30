@@ -50,6 +50,58 @@
         .btn-bet:hover {
             background-color: #16a34a;
         }
+
+        .form-section {
+        margin: 20px 0;
+        }
+
+        .form-section h2 {
+        color: #fff;
+        margin-bottom: 10px;
+        }
+
+        .form-card {
+        background: #1e2a38;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .form-inline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        }
+
+        .form-inline label {
+        color: #ddd;
+        margin-right: 5px;
+        }
+
+        .form-inline input,
+        .form-inline select {
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        min-width: 150px;
+        }
+
+        .form-inline button {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        }
+
+        .form-inline button:hover {
+        background: #218838;
+        }
+
     </style>
 </head>
 
@@ -82,6 +134,52 @@
                                 <li><a class="dropdown-item" href="#">🚪 Cerrar sesión</a></li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Formularios</h2>
+                    <div class="form-card">
+                        <form action="/buscar" method="GET" class="form-inline">
+                            <label>Buscar apuesta:</label>
+                            <input type="text" name="nombre" placeholder="Ej. Real Madrid vs PSG" required>
+                            <button type="submit">Buscar</button>
+                        </form>
+                    </div>
+
+                    <div class="form-card">
+                        <form action="/filtrar" method="GET" class="form-inline">
+                            <label>Categoría:</label>
+                            <select name="categoria" required>
+                                <option value="Futbol">Fútbol</option>
+                                <option value="Basket">Basket</option>
+                                <option value="Tenis">Tenis</option>
+                            </select>
+                            <button type="submit">Filtrar</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Formularios</h2>
+                    <div class="form-card">
+                        <form action="/registro" method="POST" class="form-inline">
+                            <label>Usuario:</label>
+                            <input type="text" name="usuario" placeholder="Tu usuario" required>
+                            <label>Contraseña:</label>
+                            <input type="password" name="clave" placeholder="*******" required>
+                            <button type="submit">Registrar</button>
+                        </form>
+                    </div>
+
+                    <div class="form-card">
+                        <form action="/apuesta" method="POST" class="form-inline">
+                            <label>Monto:</label>
+                            <input type="number" name="monto" placeholder="50" step="0.01" required>
+                            <label>Partido:</label>
+                            <input type="text" name="partido" placeholder="Ej. Lakers vs Celtics" required>
+                            <button type="submit">Apostar</button>
+                        </form>
                     </div>
                 </div>
 
