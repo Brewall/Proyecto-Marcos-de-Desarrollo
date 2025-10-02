@@ -1,182 +1,482 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Eventos - Casa de Apuestas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{eventos.title}">Eventos - Casa de Apuestas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --card-bg: #1e2a38;
+            --accent-color: #22c55e;
+            --accent-hover: #16a34a;
+            --text-light: #cbd5e1;
+            --text-white: #ffffff;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
         body {
-            background-color: #0f172a;
-            color: #fff;
+            background-color: var(--primary-bg);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .sidebar {
             min-height: 100vh;
-            background-color: #1e293b;
+            background-color: var(--secondary-bg);
             padding-top: 1rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
 
         .sidebar a {
-            color: #cbd5e1;
+            color: var(--text-light);
             display: block;
-            padding: 10px 15px;
+            padding: 12px 15px;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             margin: 5px 0;
+            transition: var(--transition);
         }
 
-        .sidebar a:hover,
-        .sidebar a.active {
+        .sidebar a:hover, .sidebar a.active {
             background-color: #334155;
-            color: #fff;
+            color: var(--text-white);
+            transform: translateX(5px);
+        }
+
+        .sidebar .brand {
+            padding: 15px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #334155;
         }
 
         .card-custom {
-            background-color: #1e293b;
+            background-color: var(--card-bg);
             border: none;
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: var(--border-radius);
+            padding: 20px;
             margin-bottom: 20px;
+            transition: var(--transition);
+            height: 100%;
+            position: relative; /* Añadido para posicionar la etiqueta correctamente */
+        }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .btn-bet {
-            background-color: #22c55e;
+            background-color: var(--accent-color);
             border: none;
             color: white;
             font-weight: bold;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 10px;
         }
 
         .btn-bet:hover {
-            background-color: #16a34a;
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .event-card {
+            cursor: pointer;
+        }
+
+        .event-card h5 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-white);
+        }
+
+        .event-card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .odds-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #2d3748;
+            border-radius: 8px;
+        }
+
+        .odd-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .odd-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+        }
+
+        .odd-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* CORRECCIÓN: Cambio en el posicionamiento de la etiqueta deportiva */
+        .sport-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .event-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        footer img {
+            background: white;
+            padding: 4px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        footer img:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icons a {
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                min-height: auto;
+                position: relative;
+            }
+
+            .odds-container {
+                flex-direction: column;
+                gap: 5px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2 sidebar">
-                <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
-                <a th:href="@{/}">🏠 Dashboard</a>
-                <a th:href="@{/eventos}" class="active">⚽ Deportes</a>
-                <a th:href="@{/apuestas}">🎟 Mis Apuestas</a>
-                <a th:href="@{/historial}">📜 Historial</a>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+            <div class="brand">
+                <h4 class="text-center text-white mb-0" th:text="#{sidebar.brand}">MiCasaDeApuestas</h4>
             </div>
+            <a th:href="@{/}" th:text="#{sidebar.dashboard}">Dashboard</a>
+            <a th:href="@{/eventos}" class="active" th:text="#{sidebar.sports}">Deportes</a>
+            <a th:href="@{/apuestas}" th:text="#{sidebar.myBets}">Mis Apuestas</a>
+            <a th:href="@{/historial}" th:text="#{sidebar.history}">Historial</a>
+        </div>
 
-            <div class="col-md-10 p-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Eventos Deportivos</h2>
+        <!-- Contenido principal -->
+        <div class="col-md-10 p-4">
+            <!-- Header -->
+            <div class="header-section">
+
+                <!-- Mostrar mensajes -->
+                <div th:if="${mensaje}" class="alert"
+                     th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}">
+                    <i class="bi bi-check-circle me-2" th:if="${tipoMensaje == 'success'}"></i>
+                    <i class="bi bi-exclamation-triangle me-2" th:if="${tipoMensaje != 'success'}"></i>
+                    <span th:text="${mensaje}"></span>
+                </div>
+
+                <div th:if="${resultado}" class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <span th:text="${resultado}"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 th:text="#{eventos.title}">Eventos Deportivos</h2>
+                        <p class="mb-0 text-light" th:text="#{eventos.subtitle}">Descubre y apuesta en los mejores eventos deportivos</p>
+                    </div>
                     <div class="d-flex align-items-center">
-                        <span class="me-4">💰 Saldo: <strong>€500.00</strong></span>
-
+                        <span class="me-4">
+                            <span th:text="#{dashboard.balance}">💰 Saldo:</span>
+                            <strong>€<span th:text="${#numbers.formatDecimal(saldo, 0, 'COMMA', 2, 'POINT')}">500.00</span></strong>
+                        </span>
                         <div class="dropdown">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                👤 Carlos Rodríguez
+                            <a class="btn btn-secondary dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-2"></i>
+                                <span th:text="${nombre}">Carlos Rodríguez</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" th:href="@{/perfil}">👤 Mi Perfil</a></li>
-                                <li><a class="dropdown-item" href="#">🚪 Cerrar sesión</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" th:href="@{/perfil}" th:text="#{user.profile}"><i class="bi bi-person me-2"></i>Mi Perfil</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" th:text="#{user.logout}"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>⚽ Champions League - Final</h5>
-                            <p>Real Madrid vs PSG</p>
-                            <button class="btn btn-bet">Apostar</button>
+            <!-- Eventos destacados -->
+            <div class="row">
+                <!-- Evento 1 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-success sport-badge" th:text="#{sports.football}">Fútbol</span>
+                        <div class="event-date">Hoy, 20:00</div>
+                        <h5 th:text="#{eventos.championsFinal}">Champions League - Final</h5>
+                        <p th:text="#{events.realVsPsg}">Real Madrid vs PSG</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">1.85</div>
+                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">3.40</div>
+                                <div class="odd-label" th:text="#{eventos.odds.draw}">Empate</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">2.10</div>
+                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>🏀 NBA Finals</h5>
-                            <p>Lakers vs Celtics</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- Evento 1 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>⚽ Champions League - Final</h5>
-                            <p>Real Madrid vs PSG</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 2 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>🏀 NBA Finals</h5>
-                            <p>Lakers vs Celtics</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 3 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>⚽ Premier League</h5>
-                            <p>Manchester City vs Liverpool</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 4 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>🎾 Wimbledon - Semifinal</h5>
-                            <p>Novak Djokovic vs Carlos Alcaraz</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 5 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>🏈 Super Bowl</h5>
-                            <p>Kansas City Chiefs vs San Francisco 49ers</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 6 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>⚾ MLB World Series</h5>
-                            <p>Yankees vs Dodgers</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 7 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>🥊 Boxeo - Peso Pesado</h5>
-                            <p>Tyson Fury vs Oleksandr Usyk</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
-                    </div>
-
-                    <!-- Evento 8 -->
-                    <div class="col-md-6">
-                        <div class="card-custom">
-                            <h5>🏎 Fórmula 1 - Gran Premio de Mónaco</h5>
-                            <p>Verstappen vs Hamilton</p>
-                            <button class="btn btn-bet">Apostar</button>
-                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
                     </div>
                 </div>
 
+                <!-- Evento 2 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-primary sport-badge" th:text="#{sports.basketball}">Basket</span>
+                        <div class="event-date">Mañana, 02:30</div>
+                        <h5 th:text="#{eventos.nbaFinals}">NBA Finals</h5>
+                        <p th:text="#{events.lakersVsCeltics}">Lakers vs Celtics</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">2.10</div>
+                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">3.20</div>
+                                <div class="odd-label" th:text="#{eventos.odds.draw}">Empate</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">1.90</div>
+                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
+
+                <!-- Evento 3 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-success sport-badge" th:text="#{sports.football}">Fútbol</span>
+                        <div class="event-date">12 Jun, 16:00</div>
+                        <h5 th:text="#{eventos.premierLeague}">Premier League</h5>
+                        <p th:text="#{eventos.manCityVsLiverpool}">Manchester City vs Liverpool</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">1.95</div>
+                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">3.50</div>
+                                <div class="odd-label" th:text="#{eventos.odds.draw}">Empate</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">2.05</div>
+                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
+
+                <!-- Evento 4 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-warning text-dark sport-badge" th:text="#{sports.tennis}">Tenis</span>
+                        <div class="event-date">15 Jul, 14:00</div>
+                        <h5 th:text="#{events.wimbledon}">Wimbledon - Semifinal</h5>
+                        <p th:text="#{events.djokovicVsAlcaraz}">Novak Djokovic vs Carlos Alcaraz</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">1.75</div>
+                                <div class="odd-label" th:text="#{eventos.odds.player1}">Djokovic</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">2.15</div>
+                                <div class="odd-label" th:text="#{eventos.odds.player2}">Alcaraz</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
+
+                <!-- Evento 5 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-danger sport-badge" th:text="#{eventos.sports.americanFootball}">Fútbol Americano</span>
+                        <div class="event-date">11 Feb, 23:30</div>
+                        <h5 th:text="#{eventos.superBowl}">Super Bowl</h5>
+                        <p th:text="#{eventos.chiefsVs49ers}">Kansas City Chiefs vs San Francisco 49ers</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">1.80</div>
+                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">2.00</div>
+                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
+
+                <!-- Evento 6 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-info sport-badge" th:text="#{eventos.sports.baseball}">Béisbol</span>
+                        <div class="event-date">25 Oct, 20:00</div>
+                        <h5 th:text="#{eventos.worldSeries}">MLB World Series</h5>
+                        <p th:text="#{eventos.yankeesVsDodgers}">Yankees vs Dodgers</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">2.25</div>
+                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">1.65</div>
+                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
+
+                <!-- Evento 7 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-dark sport-badge" th:text="#{sports.boxing}">Boxeo</span>
+                        <div class="event-date">18 Ago, 22:00</div>
+                        <h5 th:text="#{eventos.heavyweightFight}">Boxeo - Peso Pesado</h5>
+                        <p th:text="#{eventos.furyVsUsyk}">Tyson Fury vs Oleksandr Usyk</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">1.60</div>
+                                <div class="odd-label" th:text="#{eventos.odds.player1}">Fury</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">2.40</div>
+                                <div class="odd-label" th:text="#{eventos.odds.player2}">Usyk</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
+
+                <!-- Evento 8 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card-custom event-card">
+                        <span class="badge bg-secondary sport-badge" th:text="#{eventos.sports.formula1}">Fórmula 1</span>
+                        <div class="event-date">26 May, 15:00</div>
+                        <h5 th:text="#{eventos.monacoGP}">🏎 Fórmula 1 - Gran Premio de Mónaco</h5>
+                        <p th:text="#{eventos.verstappenVsHamilton}">Verstappen vs Hamilton</p>
+                        <div class="odds-container">
+                            <div class="odd-item">
+                                <div class="odd-value">1.45</div>
+                                <div class="odd-label" th:text="#{eventos.odds.player1}">Verstappen</div>
+                            </div>
+                            <div class="odd-item">
+                                <div class="odd-value">2.75</div>
+                                <div class="odd-label" th:text="#{eventos.odds.player2}">Hamilton</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+</div>
 
+<!-- Footer -->
+<footer class="bg-dark text-light mt-5 pt-4 pb-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.sponsorships}">Patrocinios</h5>
+                <ul class="list-unstyled">
+                    <li>🏆 UEFA</li>
+                    <li>🏀 NBA</li>
+                    <li>🎾 ATP</li>
+                    <li>🥊 WBC</li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.links}">Enlaces</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.aboutUs}">Sobre Nosotros</a></li>
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.terms}">Términos y Condiciones</a></li>
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.privacyPolicy}">Política de Privacidad</a></li>
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.responsibleGaming}">Juego Responsable</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.paymentMethods}">Métodos de Pago</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <img src="https://logo.clearbit.com/visa.com" alt="Visa" width="50">
+                    <img src="https://logo.clearbit.com/mastercard.com" alt="Mastercard" width="50">
+                    <img src="https://logo.clearbit.com/paypal.com" alt="PayPal" width="50">
+                    <img src="https://img.logo.dev/bitcoin.org" alt="Bitcoin" width="50">
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.followUs}">Síguenos</h5>
+                <div class="d-flex gap-3 social-icons">
+                    <a href="#" class="text-light fs-4"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light fs-4"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-light fs-4"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nota de responsabilidad -->
+        <div class="text-center mt-4 pt-2 border-top border-secondary">
+            <small th:text="#{footer.responsibilityNote}">El juego puede causar adicción. Juega con responsabilidad. +18</small>
+            <div class="mt-2">
+                <a href="?lang=es" class="text-light me-3">🇪🇸 Español</a>
+                <a href="?lang=en" class="text-light me-3">🇬🇧 English</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

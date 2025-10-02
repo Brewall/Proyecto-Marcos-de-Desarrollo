@@ -2,96 +2,353 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Historial - Casa de Apuestas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{historial.title}">Historial - Casa de Apuestas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-        body { background-color: #0f172a; color: #fff; }
-        .sidebar { min-height: 100vh; background-color: #1e293b; padding-top: 1rem; }
-        .sidebar a { color: #cbd5e1; display: block; padding: 10px 15px; text-decoration: none; border-radius: 8px; margin: 5px 0; }
-        .sidebar a:hover, .sidebar a.active { background-color: #334155; color: #fff; }
-        .dropdown-menu { background-color: #1e293b; }
-        .dropdown-menu a { color: #cbd5e1; }
-        .dropdown-menu a:hover { background-color: #334155; color: #fff; }
-        .badge-win { background-color: #22c55e; }
-        .badge-lose { background-color: #ef4444; }
-        .card-custom { background-color: #1e293b; border: none; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        :root {
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --card-bg: #1e2a38;
+            --accent-color: #22c55e;
+            --accent-hover: #16a34a;
+            --text-light: #cbd5e1;
+            --text-white: #ffffff;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: var(--secondary-bg);
+            padding-top: 1rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar a {
+            color: var(--text-light);
+            display: block;
+            padding: 12px 15px;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            margin: 5px 0;
+            transition: var(--transition);
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #334155;
+            color: var(--text-white);
+            transform: translateX(5px);
+        }
+
+        .sidebar .brand {
+            padding: 15px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .card-custom {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .table-custom {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .table-custom th {
+            background-color: #334155;
+            border: none;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .table-custom td {
+            border-color: #374151;
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .badge-win {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .badge-lose {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .badge-pending {
+            background-color: #f59e0b;
+            color: black;
+        }
+
+        .btn-details {
+            background-color: #3b82f6;
+            border: none;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .btn-details:hover {
+            background-color: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .stats-card {
+            text-align: center;
+            padding: 20px 15px;
+        }
+
+        .stats-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .stats-card p {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+            color: var(--text-white);
+        }
+
+        .profit-positive {
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .profit-negative {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .profit-neutral {
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        footer img {
+            background: white;
+            padding: 4px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        footer img:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icons a {
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                min-height: auto;
+                position: relative;
+            }
+
+            .table-responsive {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-2 sidebar">
-            <h4 class="text-center text-white mb-4">🎲 MiCasaDeApuestas</h4>
-            <a th:href="@{/}">🏠 Dashboard</a>
-            <a th:href="@{/eventos}">⚽ Deportes</a>
-            <a th:href="@{/apuestas}">🎟 Mis Apuestas</a>
-            <a th:href="@{/historial}" class="active">📜 Historial</a>
-            <a th:href="@{/perfil}">👤 Perfil</a>
+            <div class="brand">
+                <h4 class="text-center text-white mb-0" th:text="#{sidebar.brand}">MiCasaDeApuestas</h4>
+            </div>
+            <a th:href="@{/}" th:text="#{sidebar.dashboard}">Dashboard</a>
+            <a th:href="@{/eventos}" th:text="#{sidebar.sports}">Deportes</a>
+            <a th:href="@{/apuestas}" th:text="#{sidebar.myBets}">Mis Apuestas</a>
+            <a th:href="@{/historial}" class="active" th:text="#{sidebar.history}">Historial</a>
         </div>
 
         <!-- Contenido principal -->
         <div class="col-md-10 p-4">
             <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>📜 Historial de Apuestas</h2>
-                <div class="d-flex align-items-center">
-                    <span class="me-4">💰 Saldo: <strong>€500.00</strong></span>
-                    <!-- Menú usuario -->
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            👤 Carlos Rodríguez
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a></li>
-                        </ul>
+            <div class="header-section">
+
+                <!-- Mostrar mensajes -->
+                <div th:if="${mensaje}" class="alert"
+                     th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}">
+                    <i class="bi bi-check-circle me-2" th:if="${tipoMensaje == 'success'}"></i>
+                    <i class="bi bi-exclamation-triangle me-2" th:if="${tipoMensaje != 'success'}"></i>
+                    <span th:text="${mensaje}"></span>
+                </div>
+
+                <div th:if="${resultado}" class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <span th:text="${resultado}"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 th:text="#{historial.title}">Historial de Apuestas</h2>
+                        <p class="mb-0 text-light" th:text="#{historial.subtitle}">Revisa tu historial completo de apuestas y resultados</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="me-4">
+                            <span th:text="#{dashboard.balance}">💰 Saldo:</span>
+                            <strong>€<span th:text="${#numbers.formatDecimal(saldo, 0, 'COMMA', 2, 'POINT')}">500.00</span></strong>
+                        </span>
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-2"></i>
+                                <span th:text="${nombre}">Carlos Rodríguez</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" th:href="@{/perfil}" th:text="#{user.profile}"><i class="bi bi-person me-2"></i>Mi Perfil</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" th:text="#{user.logout}"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas rápidas -->
+            <div class="row text-center mb-4">
+                <div class="col-md-3">
+                    <div class="card-custom stats-card">
+                        <h4 th:text="#{historial.stats.totalBets}">Total Apuestas</h4>
+                        <p>25</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-custom stats-card">
+                        <h4 th:text="#{historial.stats.wonBets}">Apuestas Ganadas</h4>
+                        <p class="profit-positive">15</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-custom stats-card">
+                        <h4 th:text="#{historial.stats.lostBets}">Apuestas Perdidas</h4>
+                        <p class="profit-negative">7</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-custom stats-card">
+                        <h4 th:text="#{historial.stats.totalProfit}">Ganancia Total</h4>
+                        <p class="profit-positive">+€320.50</p>
                     </div>
                 </div>
             </div>
 
             <!-- Tabla Historial -->
             <div class="card-custom">
-                <table class="table table-dark table-striped align-middle">
-                    <thead>
+                <div class="table-responsive">
+                    <table class="table table-custom table-striped align-middle">
+                        <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Evento</th>
-                            <th>Monto</th>
-                            <th>Resultado</th>
-                            <th>Ganancia</th>
-                            <th>Acciones</th>
+                            <th th:text="#{historial.table.date}">Fecha</th>
+                            <th th:text="#{historial.table.event}">Evento</th>
+                            <th th:text="#{historial.table.amount}">Monto</th>
+                            <th th:text="#{historial.table.odds}">Cuota</th>
+                            <th th:text="#{historial.table.result}">Resultado</th>
+                            <th th:text="#{historial.table.profit}">Ganancia</th>
+                            <th th:text="#{historial.table.actions}">Acciones</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>01/09/2025</td>
-                            <td>Real Madrid vs PSG</td>
+                            <td th:text="#{events.realVsPsg}">Real Madrid vs PSG</td>
                             <td>50 €</td>
-                            <td><span class="badge badge-win">Ganada</span></td>
-                            <td>92 €</td>
+                            <td>1.85</td>
+                            <td><span class="badge badge-win" th:text="#{recentBets.won}">Ganada</span></td>
+                            <td class="profit-positive">+92 €</td>
                             <td>
-                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle" 
-                                    data-evento="Real Madrid vs PSG" data-monto="50 €" data-resultado="Ganada" data-ganancia="92 €">
-                                    Ver Detalles
+                                <button class="btn btn-details btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle"
+                                        data-evento="Real Madrid vs PSG" data-monto="50 €" data-cuota="1.85" data-resultado="Ganada" data-ganancia="92 €">
+                                    <i class="bi bi-eye me-1"></i>
+                                    <span th:text="#{historial.actions.viewDetails}">Ver Detalles</span>
                                 </button>
                             </td>
                         </tr>
                         <tr>
                             <td>02/09/2025</td>
-                            <td>Lakers vs Celtics</td>
+                            <td th:text="#{events.lakersVsCeltics}">Lakers vs Celtics</td>
                             <td>30 €</td>
-                            <td><span class="badge badge-lose">Perdida</span></td>
-                            <td>0 €</td>
+                            <td>2.10</td>
+                            <td><span class="badge badge-lose" th:text="#{recentBets.lost}">Perdida</span></td>
+                            <td class="profit-negative">-30 €</td>
                             <td>
-                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle" 
-                                    data-evento="Lakers vs Celtics" data-monto="30 €" data-resultado="Perdida" data-ganancia="0 €">
-                                    Ver Detalles
+                                <button class="btn btn-details btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle"
+                                        data-evento="Lakers vs Celtics" data-monto="30 €" data-cuota="2.10" data-resultado="Perdida" data-ganancia="0 €">
+                                    <i class="bi bi-eye me-1"></i>
+                                    <span th:text="#{historial.actions.viewDetails}">Ver Detalles</span>
                                 </button>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        <tr>
+                            <td>28/08/2025</td>
+                            <td th:text="#{events.djokovicVsAlcaraz}">Djokovic vs Alcaraz</td>
+                            <td>25 €</td>
+                            <td>1.75</td>
+                            <td><span class="badge badge-win" th:text="#{recentBets.won}">Ganada</span></td>
+                            <td class="profit-positive">+43.75 €</td>
+                            <td>
+                                <button class="btn btn-details btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle"
+                                        data-evento="Djokovic vs Alcaraz" data-monto="25 €" data-cuota="1.75" data-resultado="Ganada" data-ganancia="43.75 €">
+                                    <i class="bi bi-eye me-1"></i>
+                                    <span th:text="#{historial.actions.viewDetails}">Ver Detalles</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>25/08/2025</td>
+                            <td th:text="#{eventos.manCityVsLiverpool}">Manchester City vs Liverpool</td>
+                            <td>40 €</td>
+                            <td>2.20</td>
+                            <td><span class="badge badge-lose" th:text="#{recentBets.lost}">Perdida</span></td>
+                            <td class="profit-negative">-40 €</td>
+                            <td>
+                                <button class="btn btn-details btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalle"
+                                        data-evento="Manchester City vs Liverpool" data-monto="40 €" data-cuota="2.20" data-resultado="Perdida" data-ganancia="0 €">
+                                    <i class="bi bi-eye me-1"></i>
+                                    <span th:text="#{historial.actions.viewDetails}">Ver Detalles</span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -99,34 +356,90 @@
 
 <!-- Modal Detalles -->
 <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-dark text-white">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDetalleLabel">📊 Detalles de la Apuesta</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Evento:</strong> <span id="detalleEvento">-</span></p>
-        <p><strong>Monto:</strong> <span id="detalleMonto">-</span></p>
-        <p><strong>Resultado:</strong> <span id="detalleResultado">-</span></p>
-        <p><strong>Ganancia:</strong> <span id="detalleGanancia">-</span></p>
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDetalleLabel" th:text="#{historial.modal.title}">Detalles de la Apuesta</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong th:text="#{historial.modal.event}">Evento:</strong> <span id="detalleEvento">-</span></p>
+                <p><strong th:text="#{historial.modal.amount}">Monto:</strong> <span id="detalleMonto">-</span></p>
+                <p><strong th:text="#{historial.modal.odds}">Cuota:</strong> <span id="detalleCuota">-</span></p>
+                <p><strong th:text="#{historial.modal.result}">Resultado:</strong> <span id="detalleResultado">-</span></p>
+                <p><strong th:text="#{historial.modal.profit}">Ganancia:</strong> <span id="detalleGanancia">-</span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{historial.modal.close}">Cerrar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- Scripts -->
+<!-- Footer -->
+<footer class="bg-dark text-light mt-5 pt-4 pb-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.sponsorships}">Patrocinios</h5>
+                <ul class="list-unstyled">
+                    <li>🏆 UEFA</li>
+                    <li>🏀 NBA</li>
+                    <li>🎾 ATP</li>
+                    <li>🥊 WBC</li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.links}">Enlaces</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.aboutUs}">Sobre Nosotros</a></li>
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.terms}">Términos y Condiciones</a></li>
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.privacyPolicy}">Política de Privacidad</a></li>
+                    <li><a href="#" class="text-light text-decoration-none" th:text="#{footer.responsibleGaming}">Juego Responsable</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.paymentMethods}">Métodos de Pago</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <img src="https://logo.clearbit.com/visa.com" alt="Visa" width="50">
+                    <img src="https://logo.clearbit.com/mastercard.com" alt="Mastercard" width="50">
+                    <img src="https://logo.clearbit.com/paypal.com" alt="PayPal" width="50">
+                    <img src="https://img.logo.dev/bitcoin.org" alt="Bitcoin" width="50">
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 th:text="#{footer.followUs}">Síguenos</h5>
+                <div class="d-flex gap-3 social-icons">
+                    <a href="#" class="text-light fs-4"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light fs-4"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-light fs-4"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nota de responsabilidad -->
+        <div class="text-center mt-4 pt-2 border-top border-secondary">
+            <small th:text="#{footer.responsibilityNote}">El juego puede causar adicción. Juega con responsabilidad. +18</small>
+            <div class="mt-2">
+                <a href="?lang=es" class="text-light me-3">🇪🇸 Español</a>
+                <a href="?lang=en" class="text-light me-3">🇬🇧 English</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Script para cargar datos en el modal dinámicamente
-  const modalDetalle = document.getElementById('modalDetalle');
-  modalDetalle.addEventListener('show.bs.modal', function (event) {
-    const button = event.relatedTarget;
-    document.getElementById('detalleEvento').textContent = button.getAttribute('data-evento');
-    document.getElementById('detalleMonto').textContent = button.getAttribute('data-monto');
-    document.getElementById('detalleResultado').textContent = button.getAttribute('data-resultado');
-    document.getElementById('detalleGanancia').textContent = button.getAttribute('data-ganancia');
-  });
+    // Script para cargar datos en el modal dinámicamente
+    const modalDetalle = document.getElementById('modalDetalle');
+    modalDetalle.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      document.getElementById('detalleEvento').textContent = button.getAttribute('data-evento');
+      document.getElementById('detalleMonto').textContent = button.getAttribute('data-monto');
+      document.getElementById('detalleCuota').textContent = button.getAttribute('data-cuota');
+      document.getElementById('detalleResultado').textContent = button.getAttribute('data-resultado');
+      document.getElementById('detalleGanancia').textContent = button.getAttribute('data-ganancia');
+    });
 </script>
 </body>
 </html>
