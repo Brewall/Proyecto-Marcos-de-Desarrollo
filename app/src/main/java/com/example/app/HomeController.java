@@ -21,7 +21,8 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("reclamo", new Reclamo());
         return "index";
     }
 
@@ -43,6 +44,15 @@ public class HomeController {
     @GetMapping("/perfil")
     public String perfil() {
         return "perfil";
+    }
+
+     @PostMapping("/enviarReclamo")
+    public String procesarReclamo(@ModelAttribute Reclamo reclamo, Model model) {
+        model.addAttribute("mensaje", "Tu reclamo fue registrado correctamente ✅");
+        model.addAttribute("tipoMensaje", "success");
+        model.addAttribute("datos", reclamo);
+        model.addAttribute("reclamo", new Reclamo()); // limpia el form
+        return "index";
     }
 
     // Getters para que FormularioController pueda acceder a los datos
