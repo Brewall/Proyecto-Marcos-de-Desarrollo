@@ -30,7 +30,7 @@ public class HomeController {
         return "apuestas";
     }
 
-    @GetMapping("/eventos")
+    @GetMapping("/home")
     public String eventos() {
         return "eventos";
     }

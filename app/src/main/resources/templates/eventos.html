@@ -241,191 +241,32 @@
 
             <!-- Eventos destacados -->
             <div class="row">
-                <!-- Evento 1 -->
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4" th:each="evento : ${eventos}">
                     <div class="card-custom event-card">
-                        <span class="badge bg-success sport-badge" th:text="#{sports.football}">Fútbol</span>
-                        <div class="event-date">Hoy, 20:00</div>
-                        <h5 th:text="#{eventos.championsFinal}">Champions League - Final</h5>
-                        <p th:text="#{events.realVsPsg}">Real Madrid vs PSG</p>
+                        <span class="badge bg-success sport-badge" th:text="${evento.categoria}">Categoría</span>
+                        <div class="event-date" th:text="${evento.fecha}">Fecha</div>
+                        <h5 th:text="${evento.torneo}">Título</h5>
+                        <p th:text="${evento.partido}">Partido</p>
                         <div class="odds-container">
                             <div class="odd-item">
-                                <div class="odd-value">1.85</div>
-                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
+                                <div class="odd-value" th:text="${evento.cuotaLocal}">1.00</div>
+                                <div class="odd-label">Local</div>
+                            </div>
+                            <div class="odd-item" th:if="${evento.cuotaEmpate != 0}">
+                                <div class="odd-value" th:text="${evento.cuotaEmpate}">X</div>
+                                <div class="odd-label">Empate</div>
                             </div>
                             <div class="odd-item">
-                                <div class="odd-value">3.40</div>
-                                <div class="odd-label" th:text="#{eventos.odds.draw}">Empate</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">2.10</div>
-                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
+                                <div class="odd-value" th:text="${evento.cuotaVisitante}">2.00</div>
+                                <div class="odd-label">Visitante</div>
                             </div>
                         </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 2 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-primary sport-badge" th:text="#{sports.basketball}">Basket</span>
-                        <div class="event-date">Mañana, 02:30</div>
-                        <h5 th:text="#{eventos.nbaFinals}">NBA Finals</h5>
-                        <p th:text="#{events.lakersVsCeltics}">Lakers vs Celtics</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">2.10</div>
-                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">3.20</div>
-                                <div class="odd-label" th:text="#{eventos.odds.draw}">Empate</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">1.90</div>
-                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 3 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-success sport-badge" th:text="#{sports.football}">Fútbol</span>
-                        <div class="event-date">12 Jun, 16:00</div>
-                        <h5 th:text="#{eventos.premierLeague}">Premier League</h5>
-                        <p th:text="#{eventos.manCityVsLiverpool}">Manchester City vs Liverpool</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">1.95</div>
-                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">3.50</div>
-                                <div class="odd-label" th:text="#{eventos.odds.draw}">Empate</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">2.05</div>
-                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 4 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-warning text-dark sport-badge" th:text="#{sports.tennis}">Tenis</span>
-                        <div class="event-date">15 Jul, 14:00</div>
-                        <h5 th:text="#{events.wimbledon}">Wimbledon - Semifinal</h5>
-                        <p th:text="#{events.djokovicVsAlcaraz}">Novak Djokovic vs Carlos Alcaraz</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">1.75</div>
-                                <div class="odd-label" th:text="#{eventos.odds.player1}">Djokovic</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">2.15</div>
-                                <div class="odd-label" th:text="#{eventos.odds.player2}">Alcaraz</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 5 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-danger sport-badge" th:text="#{eventos.sports.americanFootball}">Fútbol Americano</span>
-                        <div class="event-date">11 Feb, 23:30</div>
-                        <h5 th:text="#{eventos.superBowl}">Super Bowl</h5>
-                        <p th:text="#{eventos.chiefsVs49ers}">Kansas City Chiefs vs San Francisco 49ers</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">1.80</div>
-                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">2.00</div>
-                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 6 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-info sport-badge" th:text="#{eventos.sports.baseball}">Béisbol</span>
-                        <div class="event-date">25 Oct, 20:00</div>
-                        <h5 th:text="#{eventos.worldSeries}">MLB World Series</h5>
-                        <p th:text="#{eventos.yankeesVsDodgers}">Yankees vs Dodgers</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">2.25</div>
-                                <div class="odd-label" th:text="#{eventos.odds.home}">Local</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">1.65</div>
-                                <div class="odd-label" th:text="#{eventos.odds.away}">Visitante</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 7 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-dark sport-badge" th:text="#{sports.boxing}">Boxeo</span>
-                        <div class="event-date">18 Ago, 22:00</div>
-                        <h5 th:text="#{eventos.heavyweightFight}">Boxeo - Peso Pesado</h5>
-                        <p th:text="#{eventos.furyVsUsyk}">Tyson Fury vs Oleksandr Usyk</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">1.60</div>
-                                <div class="odd-label" th:text="#{eventos.odds.player1}">Fury</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">2.40</div>
-                                <div class="odd-label" th:text="#{eventos.odds.player2}">Usyk</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
-                    </div>
-                </div>
-
-                <!-- Evento 8 -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card-custom event-card">
-                        <span class="badge bg-secondary sport-badge" th:text="#{eventos.sports.formula1}">Fórmula 1</span>
-                        <div class="event-date">26 May, 15:00</div>
-                        <h5 th:text="#{eventos.monacoGP}">🏎 Fórmula 1 - Gran Premio de Mónaco</h5>
-                        <p th:text="#{eventos.verstappenVsHamilton}">Verstappen vs Hamilton</p>
-                        <div class="odds-container">
-                            <div class="odd-item">
-                                <div class="odd-value">1.45</div>
-                                <div class="odd-label" th:text="#{eventos.odds.player1}">Verstappen</div>
-                            </div>
-                            <div class="odd-item">
-                                <div class="odd-value">2.75</div>
-                                <div class="odd-label" th:text="#{eventos.odds.player2}">Hamilton</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-bet" th:text="#{events.betButton}">Apostar</button>
+                        <button class="btn btn-bet">Apostar</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- Footer -->
+            <!-- Footer -->
 <footer class="bg-dark text-light mt-5 pt-4 pb-2">
     <div class="container">
         <div class="row">

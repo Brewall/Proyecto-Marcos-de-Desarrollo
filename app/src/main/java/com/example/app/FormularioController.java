@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class FormularioController {
 
@@ -26,12 +29,6 @@ public class FormularioController {
     public String buscar(@RequestParam String nombre, Model model) {
         model.addAttribute("resultado", "Resultado de búsqueda para: " + nombre);
         return "apuestas";
-    }
-
-    @GetMapping("/filtrar")
-    public String filtrar(@RequestParam String categoria, Model model) {
-        model.addAttribute("resultado", "Filtrando apuestas por categoría: " + categoria);
-        return "eventos";
     }
 
     @PostMapping("/apuesta")
